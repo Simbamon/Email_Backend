@@ -10,28 +10,29 @@ app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = "sbhan9511@gmail.com"
-app.config['MAIL_PASSWORD'] = "Gkstmdqja515110"
-app.config['MAIL_DEFAULT_SENDER'] = ('cipkorea', 'sbhan9511@gmail.com')
+app.config['MAIL_PASSWORD'] = ""
+app.config['MAIL_DEFAULT_SENDER'] = ('customname', 'sbhan9511@gmail.com')
 app.config['MAIL_MAX_EMAILS'] = None
 app.config['MAIL_ASCII_ATTACHMENTS'] = False
 
 mail = Mail(app)
 
-@app.route('/sendemail', methods=['POST'])
+@app.route('/sendemail')
 def index():
     
-    data = request.get_json()
+    # data = request.get_json()
+    # email = data['email']
+    # picture = data['picture']
 
-    email = data['email']
     msg = Message('Hello there')
-    msg.add_recipient(email)
+    msg.add_recipient('sbhan9511@gmail.com')
     msg.body = 'This is the body with'
-    mail.send(msg)
     
-    # with app.open_resource() as picture:
-    #     msg.attach('picture.jpg', 'image/jpeg', picture.read())
+    with app.open_resource('picture.jpg') as picture:
+        msg.attach('custom.jpg', 'image/jpeg', picture.read())
 
-    return "email: " + email + "Success" 
+    mail.send(msg)
+    return "Success" 
 
 if __name__ == '__main__':
     app.run()
